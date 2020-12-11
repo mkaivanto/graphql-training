@@ -7,25 +7,15 @@ You can browse this in schema browsers
 
 TODO Add definitions for starts and ends when we add custom data types
 """
-type Assignment {
+type Person {
   id: ID!
-  recipientId: ID
   # A single-line comment
   name: String!
-  """
-  Multi-line comments are supported here, as well
-  """
-  description: String
-  starts: DateTime!
-  ends: DateTime!
 }
 
 """
 In GraphQL, inputs are special types to encapsulate complex inputs
 """
-input AssignmentInput {
+input PersonInput {
   name: String!
-  description: String
-  starts: DateTime!
-  ends: DateTime!
 }

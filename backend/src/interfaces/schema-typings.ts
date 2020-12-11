@@ -25,12 +25,14 @@ export type Scalars = {
  */
 export type IAssignment = {
   __typename?: 'Assignment';
-  id: Scalars['ID'];
-  name: Scalars['String'];
   /** Multi-line comments are supported here, as well */
   description?: Maybe<Scalars['String']>;
-  starts: Scalars['DateTime'];
   ends: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  recipient?: Maybe<ICustomer>;
+  recipientId?: Maybe<Scalars['ID']>;
+  starts: Scalars['DateTime'];
 };
 
 /** In GraphQL, inputs are special types to encapsulate complex inputs */
@@ -42,19 +44,73 @@ export type IAssignmentInput = {
 };
 
 
+/**
+ * This is a sample GraphQL multi-line comment. GraphQL supports simple API
+ * documentation as part of the schema definition. This is actually enough for
+ * all needs I have encountered this far.
+ * 
+ * You can browse this in schema browsers
+ * 
+ * TODO Add definitions for starts and ends when we add custom data types
+ */
+export type ICustomer = {
+  __typename?: 'Customer';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+/** In GraphQL, inputs are special types to encapsulate complex inputs */
+export type ICustomerInput = {
+  name: Scalars['String'];
+};
+
 export type IQuery = {
   __typename?: 'Query';
   assignments: Array<IAssignment>;
+  customers: Array<ICustomer>;
+  persons: Array<IPerson>;
 };
 
 export type IMutation = {
   __typename?: 'Mutation';
   createAssignment: IAssignment;
+  createCustomer: ICustomer;
+  createPerson: IPerson;
 };
 
 
 export type IMutationCreateAssignmentArgs = {
   input?: Maybe<IAssignmentInput>;
+};
+
+
+export type IMutationCreateCustomerArgs = {
+  input?: Maybe<ICustomerInput>;
+};
+
+
+export type IMutationCreatePersonArgs = {
+  input?: Maybe<IPersonInput>;
+};
+
+/**
+ * This is a sample GraphQL multi-line comment. GraphQL supports simple API
+ * documentation as part of the schema definition. This is actually enough for
+ * all needs I have encountered this far.
+ * 
+ * You can browse this in schema browsers
+ * 
+ * TODO Add definitions for starts and ends when we add custom data types
+ */
+export type IPerson = {
+  __typename?: 'Person';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+/** In GraphQL, inputs are special types to encapsulate complex inputs */
+export type IPersonInput = {
+  name: Scalars['String'];
 };
 
 
@@ -136,33 +192,43 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type IResolversTypes = {
   Assignment: ResolverTypeWrapper<IAssignment>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   AssignmentInput: IAssignmentInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Customer: ResolverTypeWrapper<ICustomer>;
+  CustomerInput: ICustomerInput;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
+  Person: ResolverTypeWrapper<IPerson>;
+  PersonInput: IPersonInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type IResolversParentTypes = {
   Assignment: IAssignment;
-  ID: Scalars['ID'];
   String: Scalars['String'];
   AssignmentInput: IAssignmentInput;
   DateTime: Scalars['DateTime'];
+  ID: Scalars['ID'];
+  Customer: ICustomer;
+  CustomerInput: ICustomerInput;
   Query: {};
   Mutation: {};
+  Person: IPerson;
+  PersonInput: IPersonInput;
   Boolean: Scalars['Boolean'];
 };
 
 export type IAssignmentResolvers<ContextType = any, ParentType extends IResolversParentTypes['Assignment'] = IResolversParentTypes['Assignment']> = {
+  description?: Resolver<Maybe<IResolversTypes['String']>, ParentType, ContextType>;
+  ends?: Resolver<IResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<IResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<IResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<IResolversTypes['String']>, ParentType, ContextType>;
+  recipient?: Resolver<Maybe<IResolversTypes['Customer']>, ParentType, ContextType>;
+  recipientId?: Resolver<Maybe<IResolversTypes['ID']>, ParentType, ContextType>;
   starts?: Resolver<IResolversTypes['DateTime'], ParentType, ContextType>;
-  ends?: Resolver<IResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -170,19 +236,37 @@ export interface IDateTimeScalarConfig extends GraphQLScalarTypeConfig<IResolver
   name: 'DateTime';
 }
 
+export type ICustomerResolvers<ContextType = any, ParentType extends IResolversParentTypes['Customer'] = IResolversParentTypes['Customer']> = {
+  id?: Resolver<IResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<IResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type IQueryResolvers<ContextType = any, ParentType extends IResolversParentTypes['Query'] = IResolversParentTypes['Query']> = {
   assignments?: Resolver<Array<IResolversTypes['Assignment']>, ParentType, ContextType>;
+  customers?: Resolver<Array<IResolversTypes['Customer']>, ParentType, ContextType>;
+  persons?: Resolver<Array<IResolversTypes['Person']>, ParentType, ContextType>;
 };
 
 export type IMutationResolvers<ContextType = any, ParentType extends IResolversParentTypes['Mutation'] = IResolversParentTypes['Mutation']> = {
   createAssignment?: Resolver<IResolversTypes['Assignment'], ParentType, ContextType, RequireFields<IMutationCreateAssignmentArgs, never>>;
+  createCustomer?: Resolver<IResolversTypes['Customer'], ParentType, ContextType, RequireFields<IMutationCreateCustomerArgs, never>>;
+  createPerson?: Resolver<IResolversTypes['Person'], ParentType, ContextType, RequireFields<IMutationCreatePersonArgs, never>>;
+};
+
+export type IPersonResolvers<ContextType = any, ParentType extends IResolversParentTypes['Person'] = IResolversParentTypes['Person']> = {
+  id?: Resolver<IResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<IResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type IResolvers<ContextType = any> = {
   Assignment?: IAssignmentResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
+  Customer?: ICustomerResolvers<ContextType>;
   Query?: IQueryResolvers<ContextType>;
   Mutation?: IMutationResolvers<ContextType>;
+  Person?: IPersonResolvers<ContextType>;
 };
 
 

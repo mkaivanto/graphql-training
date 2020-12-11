@@ -3,12 +3,22 @@ import { createApplication } from 'graphql-modules';
 import AssignmentModule from './modules/assignments';
 import OperationsModule from './modules/operations';
 import CommonModule from './modules/common';
+
+import CustomerModule from './modules/customers';
+import PersonModule from './modules/persons';
+
 import Database from './models/Database';
 
 async function start(): Promise<void> {
   // Initialize GraphQL modules
   const application = createApplication({
-    modules: [CommonModule, AssignmentModule, OperationsModule],
+    modules: [
+      CommonModule,
+      AssignmentModule,
+      CustomerModule,
+      PersonModule,
+      OperationsModule,
+    ],
   });
 
   // This is the aggregated schema
