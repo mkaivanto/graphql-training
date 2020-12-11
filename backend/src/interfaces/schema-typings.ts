@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -11,6 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: Date;
 };
 
 /**
@@ -28,13 +29,18 @@ export type IAssignment = {
   name: Scalars['String'];
   /** Multi-line comments are supported here, as well */
   description?: Maybe<Scalars['String']>;
+  starts: Scalars['DateTime'];
+  ends: Scalars['DateTime'];
 };
 
 /** In GraphQL, inputs are special types to encapsulate complex inputs */
 export type IAssignmentInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  starts: Scalars['DateTime'];
+  ends: Scalars['DateTime'];
 };
+
 
 export type IQuery = {
   __typename?: 'Query';
@@ -133,6 +139,7 @@ export type IResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   AssignmentInput: IAssignmentInput;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -144,6 +151,7 @@ export type IResolversParentTypes = {
   ID: Scalars['ID'];
   String: Scalars['String'];
   AssignmentInput: IAssignmentInput;
+  DateTime: Scalars['DateTime'];
   Query: {};
   Mutation: {};
   Boolean: Scalars['Boolean'];
@@ -153,8 +161,14 @@ export type IAssignmentResolvers<ContextType = any, ParentType extends IResolver
   id?: Resolver<IResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<IResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<IResolversTypes['String']>, ParentType, ContextType>;
+  starts?: Resolver<IResolversTypes['DateTime'], ParentType, ContextType>;
+  ends?: Resolver<IResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
+
+export interface IDateTimeScalarConfig extends GraphQLScalarTypeConfig<IResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
 
 export type IQueryResolvers<ContextType = any, ParentType extends IResolversParentTypes['Query'] = IResolversParentTypes['Query']> = {
   assignments?: Resolver<Array<IResolversTypes['Assignment']>, ParentType, ContextType>;
@@ -166,6 +180,7 @@ export type IMutationResolvers<ContextType = any, ParentType extends IResolversP
 
 export type IResolvers<ContextType = any> = {
   Assignment?: IAssignmentResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   Query?: IQueryResolvers<ContextType>;
   Mutation?: IMutationResolvers<ContextType>;
 };

@@ -11,7 +11,8 @@
     "copy_schemas": "cpy **/*schema.graphql ../build/ --parents --cwd=src",
     "build": "tsc -b --incremental",
     "build_watch": "tsc -b --watch",
-    "generate_types": "graphql-codegen --config graphql-codegen.yml"
+    "generate_types": "graphql-codegen --config graphql-codegen.yml",
+    "restart": "npm run generate_types && npm run build && npm run copy_schemas && npm run start"
   },
   "keywords": [],
   "author": "",
@@ -45,6 +46,7 @@
     "apollo-server": "^2.19.0",
     "graphql": "^15.4.0",
     "graphql-modules": "^1.0.0",
+    "graphql-scalars": "^1.6.1",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.22.3",

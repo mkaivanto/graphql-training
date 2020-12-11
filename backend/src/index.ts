@@ -2,12 +2,13 @@ import { ApolloServer } from 'apollo-server';
 import { createApplication } from 'graphql-modules';
 import AssignmentModule from './modules/assignments';
 import OperationsModule from './modules/operations';
+import CommonModule from './modules/common';
 import Database from './models/Database';
 
 async function start(): Promise<void> {
   // Initialize GraphQL modules
   const application = createApplication({
-    modules: [AssignmentModule, OperationsModule],
+    modules: [CommonModule, AssignmentModule, OperationsModule],
   });
 
   // This is the aggregated schema
